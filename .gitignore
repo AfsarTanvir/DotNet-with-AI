@@ -1,0 +1,93 @@
+# Ignore build output
+bin/
+obj/
+
+# Ignore user-specific files
+*.user
+*.rsuser
+*.suo
+*.userosscache
+*.sln.docstates
+
+# ASP.NET Core Secrets
+*.secret.json
+*.jwk
+
+# Ignore logs
+*.log
+logs/
+
+# Ignore IDE-specific files (Visual Studio, Rider, etc.)
+.vscode/
+.idea/
+*.csproj.user
+.vs/
+
+# Ignore NuGet packages
+*.nupkg
+*.snupkg
+
+# Ignore other files
+*.swp
+*.lock.json
+*.pidb
+*.pdb
+
+# Ignore application configuration and runtime files
+appsettings.Development.json
+appsettings.local.json
+
+# Ignore temporary and OS-specific files
+*.tmp
+*.temp
+*.bak
+Thumbs.db
+.DS_Store
+desktop.ini
+
+
+# Ignore Visual Studio temporary files, build results, and
+# user-specific files
+.vs/
+*.user
+*.suo
+*.cache
+*.log
+
+# Ignore build output
+bin/
+obj/
+Debug/
+Release/
+
+# Ignore other files
+*.dll
+*.exe
+*.pdb
+*.tmp
+
+# Ignore packages and dependencies
+packages/
+
+# Ignore Windows Forms specific files
+*.resx
+*.config
+
+# Ignore database and generated data files
+*.mdf
+*.ldf
+
+# SonarQube/SonarCloud Analysis
+.sonarqube/
+.sonarlint/
+
+# Visual Studio Code
+.vscode/settings.json
+
+# Ignore Publish Profiles
+*.pubxml
+*.pubxml.user
+
+# Ignore media files 
+**/uploads
+

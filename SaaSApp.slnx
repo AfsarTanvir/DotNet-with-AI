@@ -1,0 +1,14 @@
+<Solution>
+  <Folder Name="/Modules/" />
+  <Folder Name="/Modules/Notes/">
+    <Project Path="Notes.Application/Notes.Application.csproj" />
+    <Project Path="Notes.Domain/Notes.Domain.csproj" />
+    <Project Path="Notes.Infrastructure/Notes.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/Solution Items/">
+    <File Path="NEXT_STEPS.md" />
+  </Folder>
+  <Project Path="API/API.csproj" />
+  <Project Path="BuildingBlocks/BuildingBlocks.csproj" />
+  <Project Path="Infrastructure/Infrastructure.csproj" />
+</Solution>
