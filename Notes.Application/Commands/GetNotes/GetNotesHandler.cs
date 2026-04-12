@@ -1,9 +1,10 @@
-﻿using Notes.Application.Interfaces;
+﻿using MediatR;
+using Notes.Application.Interfaces;
 using Notes.Domain.Entities;
 
 namespace Notes.Application.Commands.GetNotes
 {
-    public class GetNotesHandler
+    public class GetNotesHandler : IRequestHandler<GetNotesQuery, List<Note>>
     {
         private readonly IUnitOfWork _unitOfWork;
 

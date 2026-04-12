@@ -1,4 +1,7 @@
-﻿namespace Notes.Application.Commands.GetNotes
+﻿using MediatR;
+using Notes.Domain.Entities;
+
+namespace Notes.Application.Commands.GetNotes
 {
-    public record GetNotesQuery();
+    public record GetNotesQuery() : IRequest<List<Note>>;
 }

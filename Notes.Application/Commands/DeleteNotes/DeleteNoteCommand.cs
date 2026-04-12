@@ -1,4 +1,6 @@
-﻿namespace Notes.Application.Commands.DeleteNotes
+﻿using MediatR;
+
+namespace Notes.Application.Commands.DeleteNotes
 {
-    public record DeleteNoteCommand(Guid Id);
+    public record DeleteNoteCommand(Guid Id) : IRequest<Unit>;
 }

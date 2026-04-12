@@ -1,9 +1,10 @@
-﻿using Notes.Application.Interfaces;
+﻿using MediatR;
+using Notes.Application.Interfaces;
 using Notes.Domain.Exceptions;
 
 namespace Notes.Application.Commands.DeleteNotes
 {
-    public class DeleteNoteHandler
+    public class DeleteNoteHandler : IRequestHandler<DeleteNoteCommand, Unit>
     {
         private readonly IUnitOfWork _unitOfWork;
 
@@ -12,7 +13,7 @@ namespace Notes.Application.Commands.DeleteNotes
             _unitOfWork = unitOfWork;
         }
 
-        public async Task Handle(DeleteNoteCommand command, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(DeleteNoteCommand command, CancellationToken cancellationToken)
         {
             var note = await _unitOfWork.Notes.GetByIdAsync(command.Id, cancellationToken);
 
@@ -24,6 +25,8 @@ namespace Notes.Application.Commands.DeleteNotes
             _unitOfWork.Notes.Update(note);
 
             await _unitOfWork.SaveChangesAsync(cancellationToken);
+
+            return Unit.Value;
         }
     }
 }

@@ -1,9 +1,10 @@
-﻿using Notes.Application.Interfaces;
+﻿using MediatR;
+using Notes.Application.Interfaces;
 using Notes.Domain.Exceptions;
 
 namespace Notes.Application.Commands.UpdateNote
 {
-    public class UpdateNoteHandler
+    public class UpdateNoteHandler : IRequestHandler<UpdateNoteCommand, Unit>
     {
         private readonly IUnitOfWork _unitOfWork;
 
@@ -12,7 +13,7 @@ namespace Notes.Application.Commands.UpdateNote
             _unitOfWork = unitOfWork;
         }
 
-        public async Task Handle(UpdateNoteCommand command, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(UpdateNoteCommand command, CancellationToken cancellationToken)
         {
             var note = await _unitOfWork.Notes.GetByIdAsync(command.Id, cancellationToken);
 
@@ -25,6 +26,8 @@ namespace Notes.Application.Commands.UpdateNote
             _unitOfWork.Notes.Update(note);
 
             await _unitOfWork.SaveChangesAsync(cancellationToken);
+
+            return Unit.Value;
         }
     }
 }
