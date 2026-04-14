@@ -22,8 +22,8 @@ namespace API.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(CreateNoteCommand command, CancellationToken ct)
         {
-            var id = await _mediator.Send(command, ct);
-            return Ok(id);
+            var note = await _mediator.Send(command, ct);
+            return CreatedAtAction(nameof(GetNoteById), new { id = note.Id }, note);
         }
 
         [HttpGet]

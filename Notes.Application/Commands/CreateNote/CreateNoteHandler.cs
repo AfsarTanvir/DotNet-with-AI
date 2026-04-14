@@ -1,9 +1,10 @@
-﻿using Notes.Application.Interfaces;
+﻿using MediatR;
+using Notes.Application.Interfaces;
 using Notes.Domain.Entities;
 
 namespace Notes.Application.Commands.CreateNote
 {
-    public class CreateNoteHandler
+    public class CreateNoteHandler : IRequestHandler<CreateNoteCommand, Note>
     {
         private readonly IUnitOfWork _unitOfWork;
 
@@ -12,14 +13,14 @@ namespace Notes.Application.Commands.CreateNote
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<Guid> Handle(CreateNoteCommand request, CancellationToken ct)
+        public async Task<Note> Handle(CreateNoteCommand request, CancellationToken ct)
         {
             var note = new Note(request.Title, request.Content, request.UserId);
 
             await _unitOfWork.Notes.AddAsync(note, ct);
             await _unitOfWork.SaveChangesAsync(ct);
 
-            return note.Id;
+            return note;
         }
     }
 }

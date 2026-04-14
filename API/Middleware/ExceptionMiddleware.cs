@@ -1,4 +1,4 @@
-﻿using FluentValidation;
+using Notes.Domain.Exceptions;
 
 namespace API.Middleware
 {
@@ -17,7 +17,7 @@ namespace API.Middleware
             {
                 await _next(context);
             }
-            catch (ValidationException ex)
+            catch (FluentValidation.ValidationException ex)
             {
                 context.Response.StatusCode = 400;
 
@@ -28,6 +28,11 @@ namespace API.Middleware
                 });
 
                 await context.Response.WriteAsJsonAsync(errors);
+            }
+            catch (NoteNotFoundException ex)
+            {
+                context.Response.StatusCode = 404;
+                await context.Response.WriteAsJsonAsync(new { error = ex.Message });
             }
             catch (Exception)
             {

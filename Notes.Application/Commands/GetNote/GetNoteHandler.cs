@@ -1,21 +1,27 @@
 ﻿using MediatR;
 using Notes.Application.Interfaces;
 using Notes.Domain.Entities;
+using Notes.Domain.Exceptions;
 
 namespace Notes.Application.Commands.GetNote
 {
     public class GetNoteHandler : IRequestHandler<GetNoteQuery, Note?>
     {
-        private readonly INoteRepository _noteRepository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public GetNoteHandler(INoteRepository noteRepository)
+        public GetNoteHandler(IUnitOfWork unitOfWork)
         {
-            _noteRepository = noteRepository;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task<Note?> Handle(GetNoteQuery command, CancellationToken cancellationToken)
         {
-            return await _noteRepository.GetByIdAsync(command.id, cancellationToken);
+            var note = await _unitOfWork.Notes.GetByIdAsync(command.Id, cancellationToken);
+
+            if (note == null)
+                throw new NoteNotFoundException(command.Id);
+
+            return note;
         }
     }
 }
