@@ -1,6 +1,5 @@
 ﻿using Notes.Application.Interfaces;
 using Notes.Domain.Entities;
-using Notes.Domain.Exceptions;
 
 namespace Notes.Application.Commands.CreateNote
 {
@@ -13,22 +12,14 @@ namespace Notes.Application.Commands.CreateNote
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<Guid> Handle(CreateNoteCommand command, CancellationToken cancellationToken)
+        public async Task<Guid> Handle(CreateNoteCommand request, CancellationToken ct)
         {
-            try
-            {
-                var note = new Note(command.Title, command.Content, command.UserId);
+            var note = new Note(request.Title, request.Content, request.UserId);
 
-                await _unitOfWork.Notes.AddAsync(note, cancellationToken);
+            await _unitOfWork.Notes.AddAsync(note, ct);
+            await _unitOfWork.SaveChangesAsync(ct);
 
-                await _unitOfWork.SaveChangesAsync(cancellationToken);
-
-                return note.Id;
-            }
-            catch (ArgumentException ex)
-            {
-                throw new ValidationException(ex.Message);
-            }
+            return note.Id;
         }
     }
 }
