@@ -1,4 +1,5 @@
 using Notes.Domain.Exceptions;
+using Serilog;
 
 namespace API.Middleware
 {
@@ -19,7 +20,12 @@ namespace API.Middleware
             }
             catch (FluentValidation.ValidationException ex)
             {
-                context.Response.StatusCode = 400;
+                Log.Warning(ex,
+                    "Validation failed. Path: {Path}, Method: {Method}",
+                    context.Request.Path,
+                    context.Request.Method);
+
+                context.Response.StatusCode = StatusCodes.Status400BadRequest;
 
                 var errors = ex.Errors.Select(e => new
                 {
@@ -27,17 +33,38 @@ namespace API.Middleware
                     message = e.ErrorMessage
                 });
 
-                await context.Response.WriteAsJsonAsync(errors);
+                await context.Response.WriteAsJsonAsync(new
+                {
+                    errors
+                });
             }
             catch (NoteNotFoundException ex)
             {
-                context.Response.StatusCode = 404;
-                await context.Response.WriteAsJsonAsync(new { error = ex.Message });
+                Log.Warning(ex,
+                    "Resource not found. Path: {Path}, Method: {Method}",
+                    context.Request.Path,
+                    context.Request.Method);
+
+                context.Response.StatusCode = StatusCodes.Status404NotFound;
+
+                await context.Response.WriteAsJsonAsync(new
+                {
+                    message = ex.Message
+                });
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                context.Response.StatusCode = 500;
-                await context.Response.WriteAsJsonAsync(new { error = "Internal Server Error" });
+                Log.Error(ex,
+                    "Unhandled Exception. Path: {Path}, Method: {Method}",
+                    context.Request.Path,
+                    context.Request.Method);
+
+                context.Response.StatusCode = StatusCodes.Status500InternalServerError;
+
+                await context.Response.WriteAsJsonAsync(new
+                {
+                    message = "Internal Server Error"
+                });
             }
         }
     }
