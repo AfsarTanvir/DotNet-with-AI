@@ -1,3 +1,4 @@
+using BuildingBlocks;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Notes.Application.Commands.CreateUser;
@@ -21,14 +22,16 @@ namespace API.Controllers
         public async Task<IActionResult> Create(CreateUserCommand command, CancellationToken ct)
         {
             var user = await _mediator.Send(command, ct);
-            return CreatedAtAction(nameof(GetUserById), new { id = user.Id }, user);
+            var response = ApiResponse<object>.SuccessResponse(user, "User created successfully");
+            return CreatedAtAction(nameof(GetUserById), new { id = user.Id }, response);
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAll(CancellationToken ct)
         {
             var users = await _mediator.Send(new GetUsersQuery(), ct);
-            return Ok(users);
+            var response = ApiResponse<object>.SuccessResponse(users, "Users retrieved successfully");
+            return Ok(response);
         }
 
         [HttpGet("{id}")]
@@ -36,8 +39,12 @@ namespace API.Controllers
         {
             var user = await _mediator.Send(new GetUserQuery(id), ct);
             if (user == null)
-                return NotFound();
-            return Ok(user);
+            {
+                var errorResponse = ApiResponse<object>.ErrorResponse("User not found", "Not Found");
+                return NotFound(errorResponse);
+            }
+            var response = ApiResponse<object>.SuccessResponse(user, "User retrieved successfully");
+            return Ok(response);
         }
     }
 }

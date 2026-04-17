@@ -1,3 +1,4 @@
+using BuildingBlocks;
 using Notes.Domain.Exceptions;
 using Serilog;
 
@@ -26,17 +27,12 @@ namespace API.Middleware
                     context.Request.Method);
 
                 context.Response.StatusCode = StatusCodes.Status400BadRequest;
+                context.Response.ContentType = "application/json";
 
-                var errors = ex.Errors.Select(e => new
-                {
-                    field = e.PropertyName,
-                    message = e.ErrorMessage
-                });
+                var errors = ex.Errors.Select(e => $"{e.PropertyName}: {e.ErrorMessage}").ToList();
+                var response = ApiResponse<object>.ErrorResponse(errors, "Validation Failed");
 
-                await context.Response.WriteAsJsonAsync(new
-                {
-                    errors
-                });
+                await context.Response.WriteAsJsonAsync(response);
             }
             catch (NoteNotFoundException ex)
             {
@@ -46,25 +42,26 @@ namespace API.Middleware
                     context.Request.Method);
 
                 context.Response.StatusCode = StatusCodes.Status404NotFound;
+                context.Response.ContentType = "application/json";
 
-                await context.Response.WriteAsJsonAsync(new
-                {
-                    message = ex.Message
-                });
+                var response = ApiResponse<object>.ErrorResponse(ex.Message, "Not Found");
+                await context.Response.WriteAsJsonAsync(response);
             }
             catch (Exception ex)
             {
                 Log.Error(ex,
-                    "Unhandled Exception. Path: {Path}, Method: {Method}",
+                    "Unhandled exception. Path: {Path}, Method: {Method}",
                     context.Request.Path,
                     context.Request.Method);
 
                 context.Response.StatusCode = StatusCodes.Status500InternalServerError;
+                context.Response.ContentType = "application/json";
 
-                await context.Response.WriteAsJsonAsync(new
-                {
-                    message = "Internal Server Error"
-                });
+                var response = ApiResponse<object>.ErrorResponse(
+                    "An internal server error occurred",
+                    "Internal Server Error");
+
+                await context.Response.WriteAsJsonAsync(response);
             }
         }
     }
