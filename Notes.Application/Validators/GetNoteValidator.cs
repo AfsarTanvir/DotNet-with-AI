@@ -1,5 +1,5 @@
 using FluentValidation;
-using Notes.Application.Commands.GetNote;
+using Notes.Application.Queries.GetNote;
 
 namespace Notes.Application.Validators
 {

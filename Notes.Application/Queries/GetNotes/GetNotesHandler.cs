@@ -2,7 +2,7 @@
 using Notes.Application.Interfaces;
 using Notes.Domain.Entities;
 
-namespace Notes.Application.Commands.GetNotes
+namespace Notes.Application.Queries.GetNotes
 {
     public class GetNotesHandler : IRequestHandler<GetNotesQuery, List<Note>>
     {

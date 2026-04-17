@@ -3,7 +3,7 @@ using Notes.Application.Interfaces;
 using Notes.Domain.Entities;
 using Notes.Domain.Exceptions;
 
-namespace Notes.Application.Commands.GetNote
+namespace Notes.Application.Queries.GetNote
 {
     public class GetNoteHandler : IRequestHandler<GetNoteQuery, Note?>
     {

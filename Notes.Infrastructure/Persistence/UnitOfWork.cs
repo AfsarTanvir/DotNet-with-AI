@@ -7,11 +7,13 @@ namespace Notes.Infrastructure.Persistence
         private readonly AppDbContext _context;
 
         public INoteRepository Notes { get; }
+        public IUserRepository Users { get; }
 
-        public UnitOfWork(AppDbContext context, INoteRepository noteRepository)
+        public UnitOfWork(AppDbContext context, INoteRepository noteRepository, IUserRepository userRepository)
         {
             _context = context;
             Notes = noteRepository;
+            Users = userRepository;
         }
 
         public async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
