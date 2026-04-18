@@ -23,6 +23,18 @@ namespace Notes.Infrastructure.Persistence
             return await _context.Users.FirstOrDefaultAsync(x => x.Email == email, cancellationToken);
         }
 
+        /// <summary>
+        /// Gets user by email INCLUDING deleted users
+        /// Used during registration to prevent reuse of deleted account emails
+        /// Bypasses the global query filter
+        /// </summary>
+        public async Task<User?> GetByEmailIncludingDeletedAsync(string email, CancellationToken cancellationToken)
+        {
+            return await _context.Users
+                .IgnoreQueryFilters()  // Bypass the global DeletedAt filter
+                .FirstOrDefaultAsync(x => x.Email == email, cancellationToken);
+        }
+
         public async Task<List<User>> GetAllAsync(CancellationToken cancellationToken)
         {
             return await _context.Users.ToListAsync(cancellationToken);

@@ -1,5 +1,6 @@
 using BuildingBlocks;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Notes.Application.Commands.CreateNote;
 using Notes.Application.Commands.DeleteNotes;
@@ -9,6 +10,7 @@ using Notes.Application.Queries.GetNotes;
 
 namespace API.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/notes")]
     public class NotesController : ControllerBase
