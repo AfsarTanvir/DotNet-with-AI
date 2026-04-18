@@ -1,4 +1,5 @@
 ﻿using Notes.Domain.Common;
+using Notes.Domain.Events;
 
 namespace Notes.Domain.Entities
 {
@@ -13,6 +14,8 @@ namespace Notes.Domain.Entities
             SetTitle(title);
             Content = content;
             CreatedBy = createdBy;
+
+            AddDomainEvent(new NoteCreatedEvent(this));
         }
 
         public void SetTitle(string title)

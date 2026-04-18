@@ -4,6 +4,19 @@
     {
         public Guid Id { get; protected set; }
 
+        private List<IDomainEvent> _domainEvents = new();
+        public IReadOnlyCollection<IDomainEvent> DomainEvents => _domainEvents.AsReadOnly();
+
+        protected void AddDomainEvent(IDomainEvent eventItem)
+        {
+            _domainEvents.Add(eventItem);
+        }
+
+        public void ClearDomainEvents()
+        {
+            _domainEvents.Clear();
+        }
+
         public DateTime CreatedAt { get; protected set; }
         public DateTime? UpdatedAt { get; protected set; }
 
