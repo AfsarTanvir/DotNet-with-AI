@@ -12,7 +12,6 @@ using Notes.Infrastructure.Auth;
 using Notes.Infrastructure.Persistence;
 using Serilog;
 using System.Text;
-using Swashbuckle.AspNetCore.SwaggerUI;
 
 Log.Logger = new LoggerConfiguration()
     .Enrich.FromLogContext()
